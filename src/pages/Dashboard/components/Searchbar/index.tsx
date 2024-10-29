@@ -1,28 +1,17 @@
-import { HiRefresh } from "react-icons/hi";
-import { useHistory } from "react-router-dom";
-
-import Button from "~/components/Buttons";
-import { IconButton } from "~/components/Buttons/IconButton";
-import TextField from "~/components/TextField";
-import routes from "~/router/routes";
+import { FilterInput } from "../FilterInput";
+import { NewAdmissionButton } from "../NewAdmissionButton";
+import { RefreshButton } from "../RefreshButton";
 
 import * as S from "./styles";
 
 export const SearchBar = () => {
-  const history = useHistory();
-
-  const goToNewAdmissionPage = () => {
-    history.push(routes.newUser);
-  };
-
   return (
     <S.Container>
-      <TextField placeholder="Digite um CPF válido" />
+      <FilterInput />
+
       <S.Actions>
-        <IconButton aria-label="refetch">
-          <HiRefresh />
-        </IconButton>
-        <Button onClick={() => goToNewAdmissionPage()}>Nova Admissão</Button>
+        <RefreshButton />
+        <NewAdmissionButton />
       </S.Actions>
     </S.Container>
   );

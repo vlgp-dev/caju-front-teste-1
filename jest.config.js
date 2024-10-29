@@ -3,6 +3,7 @@ export default {
   verbose: true,
   preset: "ts-jest",
   testEnvironment: "jsdom",
+  roots: ["<rootDir>/src"],
   transform: {
     "^.+\\.tsx?$": ["ts-jest", { isolatedModules: true }],
     "^.+\\.(js|jsx)$": "babel-jest",
@@ -10,5 +11,5 @@ export default {
   moduleNameMapper: {
     "^~/(.+)": "<rootDir>/src/$1",
   },
-//   setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };

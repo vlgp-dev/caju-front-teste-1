@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import Button from "~/components/Buttons";
 import { _IconButtonStyled } from "~/components/Buttons/IconButton";
+import { Button } from "~/components/Buttons/styles";
 
 export const Container = styled.div`
   display: flex;
@@ -13,7 +13,8 @@ export const Container = styled.div`
 
 export const Card = styled.div`
   border: 2px solid #f0f0f0;
-  width: 500px;
+  max-width: 500px;
+  width: 100%;
   padding: 48px;
   display: flex;
   flex-direction: column;

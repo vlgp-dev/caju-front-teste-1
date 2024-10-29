@@ -1,35 +1,65 @@
+import { useFilters } from "~/context/filter";
+import { type Status } from "~/domain/registration";
+import { useListRegistrations } from "~/hooks/registrations/useListRegistrations";
+
 import RegistrationCard from "../RegistrationCard";
+import RegistrationCardSkeleton from "../RegistrationCardSkeleton";
 
 import * as S from "./styles";
 
-const allColumns = [
+type Column = {
+  status: Status;
+  title: string;
+};
+
+const allColumns: Column[] = [
   { status: "REVIEW", title: "Pronto para revisar" },
   { status: "APPROVED", title: "Aprovado" },
   { status: "REPROVED", title: "Reprovado" },
 ];
 
-type Props = {
-  registrations?: any[];
+const SKELETON_ARRAY = Array.from({ length: 3 }).fill("");
+
+const SKELETON_DATA = {
+  APPROVED: SKELETON_ARRAY,
+  REPROVED: SKELETON_ARRAY,
+  REVIEW: SKELETON_ARRAY,
 };
-const Collumns = (props: Props) => {
+
+const Columns = () => {
+  const { cpf } = useFilters();
+
+  const { data, isLoading, isFetching, isRefetching } =
+    useListRegistrations(cpf);
+
+  const shouldRenderSkeleton = isLoading || isFetching || isRefetching;
+
   return (
     <S.Container>
-      {allColumns.map((collum) => {
+      {allColumns.map((collumn) => {
         return (
-          <S.Column status={collum.status} key={collum.title}>
+          <S.Column
+            $status={collumn.status}
+            key={collumn.title}
+            data-testid="column"
+          >
             <>
-              <S.TitleColumn status={collum.status}>
-                {collum.title}
+              <S.TitleColumn $status={collumn.status}>
+                {collumn.title}
               </S.TitleColumn>
               <S.CollumContent>
-                {props?.registrations?.map((registration) => {
-                  return (
-                    <RegistrationCard
-                      data={registration}
-                      key={registration.id}
-                    />
-                  );
-                })}
+                {!shouldRenderSkeleton
+                  ? data?.[collumn.status]?.map((registration) => {
+                      return (
+                        <RegistrationCard
+                          {...registration}
+                          key={registration.id}
+                        />
+                      );
+                    })
+                  : SKELETON_DATA[collumn.status].map((_, index) => (
+                      <RegistrationCardSkeleton key={index} />
+                    ))}
               </S.CollumContent>
             </>
           </S.Column>
@@ -38,4 +68,4 @@ const Collumns = (props: Props) => {
     </S.Container>
   );
 };
-export default Collumns;
+export default Columns;
